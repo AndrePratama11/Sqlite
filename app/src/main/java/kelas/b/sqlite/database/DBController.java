@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,6 +34,21 @@ public class DBController extends SQLiteOpenHelper {
         basisdata.close();
     }
 
+    public void UpdateData(HashMap<String,String> queryValues){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues nilai = new ContentValues();
+        nilai.put("nama", queryValues.get("nama"));
+        nilai.put("telpon", queryValues.get("telpon"));
+        db.update("teman", nilai, "id=?", new String[]{queryValues.get("id")});
+        db.close();
+    }
+
+    public void DeleteData(HashMap<String,String> queryValue){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("teman", "id=?", new String[]{queryValue.get("id")});
+        db.close();
+    }
+
     public ArrayList<HashMap<String,String>> getAllTeman() {
         ArrayList<HashMap<String,String>> daftarTeman;
         daftarTeman = new ArrayList<HashMap<String,String>>();
@@ -54,4 +67,6 @@ public class DBController extends SQLiteOpenHelper {
         db.close();
         return daftarTeman;
     }
+
+
 }
